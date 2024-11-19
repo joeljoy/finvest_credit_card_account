@@ -6,6 +6,12 @@ class AppTheme extends ThemeExtension<AppTheme> {
 
   AppTheme({required this.appTypography});
 
+  factory AppTheme.regular() {
+    return AppTheme(
+      appTypography: AppRegularTypography(),
+    );
+  }
+
   @override
   ThemeExtension<AppTheme> copyWith({
     ThemeExtension<AppTypography>? appTypography,
