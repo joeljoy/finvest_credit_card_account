@@ -9,9 +9,13 @@ class ChartPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     const Gradient gradient = LinearGradient(
-      colors: [Color(0xFFB1BFFF), Color(0xFFB3C1FF)],
       begin: Alignment.topCenter,
       end: Alignment.bottomCenter,
+      colors: [
+        Color(0xFFB1BFFF),
+        Color(0xB3B3C1FF),
+      ],
+      stops: [0.0958, 1.0],
     );
 
     // Create a shader for the gradient
@@ -67,7 +71,7 @@ class ChartPainter extends CustomPainter {
       double controlX1 = x1 + (x2 - x1) / 2;
       splinePath.cubicTo(controlX1, y1, controlX1, y2, x2, y2);
     }
-    
+
     canvas.drawPath(splinePath, splinePaint);
   }
 
