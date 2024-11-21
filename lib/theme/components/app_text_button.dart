@@ -1,3 +1,4 @@
+import 'package:finvest_credit_card_account/theme/app_colors.dart';
 import 'package:finvest_credit_card_account/theme/app_spacing.dart';
 import 'package:finvest_credit_card_account/theme/theme_ext.dart';
 import 'package:flutter/material.dart';
@@ -14,7 +15,7 @@ class AppTextButton extends StatelessWidget {
     required this.label,
     this.trailingIcon,
     this.leadingIcon,
-    this.textColor,
+    this.textColor = AppColors.teal,
     required this.onTap,
   });
 
@@ -31,9 +32,10 @@ class AppTextButton extends StatelessWidget {
           ],
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xxsmall),
-            child: Text(label,
-                style:
-                    context.typography.subHeading3.copyWith(color: textColor)),
+            child: Text(
+              label.toUpperCase(),
+              style: context.typography.subHeading3.copyWith(color: textColor),
+            ),
           ),
           if (trailingIcon != null) ...[
             trailingIcon!,
