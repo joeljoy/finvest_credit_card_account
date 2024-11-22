@@ -34,7 +34,7 @@ class _HomeViewState extends State<HomeView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.grey2,
+      backgroundColor: AppColors.lightBlue,
       appBar: AppBar(
         leading: const Icon(CupertinoIcons.chevron_back),
         title: const Text("Credit Card"),
