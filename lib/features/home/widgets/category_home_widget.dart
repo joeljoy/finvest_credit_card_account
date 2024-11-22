@@ -2,6 +2,7 @@ import 'package:finvest_credit_card_account/common/category/domain/entities/cate
 import 'package:finvest_credit_card_account/features/home/widgets/home_component_template_widget.dart';
 import 'package:finvest_credit_card_account/theme/app_colors.dart';
 import 'package:finvest_credit_card_account/theme/components/app_text_button.dart';
+import 'package:finvest_credit_card_account/utils/image_logo_util.dart';
 import 'package:flutter/material.dart';
 
 class CategoryHomeWidget extends HomeComponentTemplateWidget {
@@ -21,7 +22,7 @@ class CategoryHomeWidget extends HomeComponentTemplateWidget {
         title: category.category.name,
         description: description,
         amount: category.totalValue,
-        imageSource: 'assets/wells_fargo_logo.png',
+        imageSource: ImageLogoUtil.getLogoForName(category.category.name),
       );
     }).toList(growable: false);
   }

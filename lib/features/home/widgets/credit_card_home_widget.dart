@@ -2,6 +2,7 @@ import 'package:finvest_credit_card_account/common/credit_card/domain/entities/c
 import 'package:finvest_credit_card_account/features/home/widgets/home_component_template_widget.dart';
 import 'package:finvest_credit_card_account/theme/app_colors.dart';
 import 'package:finvest_credit_card_account/theme/components/app_text_button.dart';
+import 'package:finvest_credit_card_account/utils/image_logo_util.dart';
 import 'package:flutter/material.dart';
 
 class CreditCardHomeWidget extends HomeComponentTemplateWidget {
@@ -20,7 +21,7 @@ class CreditCardHomeWidget extends HomeComponentTemplateWidget {
         title: creditCard.creditCard.name,
         description: creditCard.creditCard.maskedNumber,
         amount: creditCard.balance,
-        imageSource: 'assets/wells_fargo_logo.png',
+        imageSource: ImageLogoUtil.getLogoForName(creditCard.creditCard.name),
       );
     }).toList(growable: false);
   }

@@ -3,6 +3,7 @@ import 'package:finvest_credit_card_account/features/home/widgets/home_component
 import 'package:finvest_credit_card_account/theme/app_colors.dart';
 import 'package:finvest_credit_card_account/theme/components/app_text_button.dart';
 import 'package:finvest_credit_card_account/utils/data_and_time_util.dart';
+import 'package:finvest_credit_card_account/utils/image_logo_util.dart';
 import 'package:flutter/material.dart';
 
 class TransactionHomeWidget extends HomeComponentTemplateWidget {
@@ -26,7 +27,7 @@ class TransactionHomeWidget extends HomeComponentTemplateWidget {
         title: transaction.merchantName,
         description: description.toString(),
         amount: transaction.value,
-        imageSource: 'assets/wells_fargo_logo.png',
+        imageSource: ImageLogoUtil.getLogoForName(transaction.merchantName),
       );
     }).toList(growable: false);
   }
