@@ -2,12 +2,15 @@ import 'dart:math';
 import 'package:finvest_credit_card_account/common/transactions/domain/entities/transaction.dart';
 
 class FinvestDataHelper {
-  List<Transaction> get transactions => _transactions;
-  List<Transaction> _transactions = [];
-
-  FinvestDataHelper() {
-    _transactions = _generateTransactions(1000);
+  
+  List<Transaction> get transactions {
+    if (_transactions.isEmpty) {
+      _transactions = _generateTransactions(1000);
+    }
+    return _transactions;
   }
+
+  List<Transaction> _transactions = [];
 
   List<String> merchantNames = [
     'Uber',
