@@ -2,7 +2,7 @@ import 'dart:math';
 import 'package:finvest_credit_card_account/common/transactions/domain/entities/transaction.dart';
 
 class FinvestDataHelper {
-  
+
   List<Transaction> get transactions {
     if (_transactions.isEmpty) {
       _transactions = _generateTransactions(1000);
@@ -21,7 +21,7 @@ class FinvestDataHelper {
   ];
 
   List<String> creditCards = [
-    'City Gold',
+    'Citi Gold',
     'WellsFargo Platinum',
   ];
 

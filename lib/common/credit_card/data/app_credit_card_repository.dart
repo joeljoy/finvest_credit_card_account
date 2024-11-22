@@ -10,6 +10,11 @@ class AppCreditCardRepository implements CreditCardRepository {
       : _creditCardDataSource = creditCardDataSource;
 
   @override
+  double getTotalBalance() {
+    return _creditCardDataSource.calculateTotalBalance();
+  }
+
+  @override
   List<CreditCard> getAllCreditCards() {
     return _creditCardDataSource.getCreditCardList();
   }

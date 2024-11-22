@@ -34,4 +34,9 @@ class CreditCardDataSource {
 
     return creditCardBalances;
   }
+
+  double calculateTotalBalance() {
+    final creditCardToBalanceMap = calculateCreditCardBalances();
+    return creditCardToBalanceMap.values.fold(0.0, (sum, value) => sum + value);
+  }
 }

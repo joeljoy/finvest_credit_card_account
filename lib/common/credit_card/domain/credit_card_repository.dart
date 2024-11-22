@@ -4,4 +4,5 @@ import 'package:finvest_credit_card_account/common/credit_card/domain/entities/c
 abstract class CreditCardRepository {
   List<CreditCard> getAllCreditCards();
   List<CreditCardWithBalance> getAllCreditCardsWithBalance();
+  double getTotalBalance();
 }

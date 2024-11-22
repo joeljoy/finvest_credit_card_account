@@ -11,6 +11,9 @@ class HomeViewModel extends ViewModel {
   final CategoryRepository _categoryRepository;
   final TransactionRepository _transactionRepository;
 
+  double get totalBalance => _totalBalance;
+  double _totalBalance = 0.0;
+
   List<CreditCardWithBalance> get creditCardList => _creditCardList;
   List<CreditCardWithBalance> _creditCardList = List.empty();
 
@@ -29,6 +32,7 @@ class HomeViewModel extends ViewModel {
         _transactionRepository = transactionRepository;
 
   void getCreditCardList() {
+    _totalBalance = _creditCardRepository.getTotalBalance();
     _creditCardList = _creditCardRepository.getAllCreditCardsWithBalance();
     _categoryList = _categoryRepository.getTopCategoriesWithDetails(5);
     _transactionList = _transactionRepository.getRecentTransactions(5);
