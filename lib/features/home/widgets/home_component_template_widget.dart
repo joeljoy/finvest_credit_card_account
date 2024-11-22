@@ -1,17 +1,14 @@
-import 'package:finvest_credit_card_account/common/credit_card/domain/entities/credit_card_with_balance.dart';
 import 'package:finvest_credit_card_account/theme/app_colors.dart';
 import 'package:finvest_credit_card_account/theme/app_shadows.dart';
 import 'package:finvest_credit_card_account/theme/app_spacing.dart';
-import 'package:finvest_credit_card_account/theme/components/app_text_button.dart';
 import 'package:finvest_credit_card_account/theme/components/app_divider.dart';
 import 'package:finvest_credit_card_account/theme/components/financial_tile.dart';
 import 'package:finvest_credit_card_account/theme/theme_ext.dart';
 import 'package:finvest_credit_card_account/utils/currency_utils.dart';
 import 'package:flutter/material.dart';
 
-class CreditCardListWidget extends StatelessWidget {
-  final List<CreditCardWithBalance> creditCardList;
-  const CreditCardListWidget({super.key, required this.creditCardList});
+abstract class HomeComponentTemplateWidget extends StatelessWidget {
+  const HomeComponentTemplateWidget({super.key});
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -30,43 +27,43 @@ class CreditCardListWidget extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           Text(
-            "Credit Cards",
+            getTitle(),
             style:
                 context.typography.subHeading1.copyWith(color: AppColors.teal),
           ),
           const _DividerWithPadding(),
           ListView.separated(
             shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
             itemBuilder: (context, index) {
-              final card = creditCardList[index];
+              final item = getItems()[index];
               final amount =
-                  CurrencyUtils.getFormattedAmount(amount: card.balance);
+                  CurrencyUtils.getFormattedAmount(amount: item.amount);
               return FinancialTile(
                 integral: amount.$1,
                 decimal: amount.$2,
-                title: card.creditCard.name,
-                description: card.creditCard.maskedNumber,
-                imageSource: 'assets/wells_fargo_logo.png',
+                title: item.title,
+                description: item.description,
+                imageSource: item.imageSource,
               );
             },
             separatorBuilder: (_, __) => const _DividerWithPadding(),
-            itemCount: creditCardList.length,
+            itemCount: getItemsCount(),
           ),
           ...[
             const SizedBox(height: AppSpacing.small),
             const AppDivider(),
           ],
-          Center(
-            child: AppTextButton(
-                label: "Add Account",
-                leadingIcon:
-                    const Icon(Icons.add, size: 16, color: AppColors.blue),
-                onTap: () {}),
-          )
+          Center(child: getFooterButton())
         ],
       ),
     );
   }
+
+  String getTitle();
+  List<HomeComponentWidgetItem> getItems();
+  int getItemsCount();
+  Widget getFooterButton();
 }
 
 class _DividerWithPadding extends StatelessWidget {
@@ -83,4 +80,18 @@ class _DividerWithPadding extends StatelessWidget {
       ],
     );
   }
+}
+
+class HomeComponentWidgetItem {
+  final String title;
+  final String description;
+  final num amount;
+  final String imageSource;
+
+  HomeComponentWidgetItem({
+    required this.title,
+    required this.description,
+    required this.amount,
+    required this.imageSource,
+  });
 }
