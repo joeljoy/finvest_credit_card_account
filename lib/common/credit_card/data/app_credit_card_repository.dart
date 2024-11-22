@@ -1,4 +1,3 @@
-import 'package:collection/collection.dart';
 import 'package:finvest_credit_card_account/common/credit_card/data/credit_card_data_source.dart';
 import 'package:finvest_credit_card_account/common/credit_card/domain/credit_card_repository.dart';
 import 'package:finvest_credit_card_account/common/credit_card/domain/entities/credit_card.dart';
@@ -12,18 +11,16 @@ class AppCreditCardRepository implements CreditCardRepository {
 
   @override
   List<CreditCard> getAllCreditCards() {
-    return _creditCardDataSource.generateCreditCardList(2);
+    return _creditCardDataSource.getCreditCardList();
   }
 
   @override
   List<CreditCardWithBalance> getAllCreditCardsWithBalance() {
-    return _creditCardDataSource.generateCreditCardList(2).mapIndexed(
-      (idx, creditCard) {
-        return CreditCardWithBalance(
-          creditCard: creditCard,
-          balance: 112343.toDouble() + idx,
-        );
-      },
-    ).toList(growable: false);
+    final creditCardToBalanceMap =
+        _creditCardDataSource.calculateCreditCardBalances();
+    return _creditCardDataSource.getCreditCardList().map((card) {
+      final balance = creditCardToBalanceMap[card.id]!;
+      return CreditCardWithBalance(creditCard: card, balance: balance);
+    }).toList(growable: false);
   }
 }

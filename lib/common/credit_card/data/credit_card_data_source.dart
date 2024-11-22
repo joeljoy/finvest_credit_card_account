@@ -1,32 +1,37 @@
 import 'dart:math';
 
 import 'package:finvest_credit_card_account/common/credit_card/domain/entities/credit_card.dart';
+import 'package:finvest_credit_card_account/common/finvest_data_helper.dart';
 
 class CreditCardDataSource {
-  final cardNames = [
-    'City Gold',
-    'WellsFargo Platinum',
-    'Chase Sapphire',
-    'Amex Gold',
-    'Discover It'
-  ];
+  final FinvestDataHelper _finvestDataHelper;
 
-  List<CreditCard> generateCreditCardList(int count) {
+  CreditCardDataSource({required FinvestDataHelper finvestDataHelper})
+      : _finvestDataHelper = finvestDataHelper;
+
+  List<String> get cardNames => _finvestDataHelper.creditCards;
+
+  List<CreditCard> getCreditCardList() {
     final random = Random();
-    final List<CreditCard> creditCards = [];
-    for (int i = 0; i < count; i++) {
-      final id = 'CC-${random.nextInt(1000000).toString().padLeft(6, '0')}';
+    return _finvestDataHelper.creditCards.map((cardId) {
       final maskedNumber =
           '**** **** **** ${random.nextInt(10000).toString().padLeft(4, '0')}';
-      final name = cardNames[random.nextInt(cardNames.length)];
+      return CreditCard(id: cardId, maskedNumber: maskedNumber, name: cardId);
+    }).toList(growable: false);
+  }
 
-      creditCards.add(CreditCard(
-        id: id,
-        maskedNumber: maskedNumber,
-        name: name,
-      ));
+  Map<String, double> calculateCreditCardBalances() {
+    final transactions = _finvestDataHelper.transactions;
+    final Map<String, double> creditCardBalances = {};
+
+    for (var transaction in transactions) {
+      creditCardBalances.update(
+        transaction.creditCardId,
+        (currentBalance) => currentBalance + transaction.value,
+        ifAbsent: () => transaction.value,
+      );
     }
 
-    return creditCards;
+    return creditCardBalances;
   }
 }
