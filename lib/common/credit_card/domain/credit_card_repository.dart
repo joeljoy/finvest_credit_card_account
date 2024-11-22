@@ -4,5 +4,10 @@ import 'package:finvest_credit_card_account/common/credit_card/domain/entities/c
 abstract class CreditCardRepository {
   List<CreditCard> getAllCreditCards();
   List<CreditCardWithBalance> getAllCreditCardsWithBalance();
+  List<CreditCardWithBalance> getAllCreditCardsWithBalanceForPeriod(
+      {required DateTime start, required DateTime end});
   double getTotalBalance();
+  double getTotalBalanceForPeriod(
+      {required DateTime start, required DateTime end});
+  List<double> getBalances();
 }

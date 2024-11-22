@@ -24,10 +24,10 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
-  final List<double> dataPoints = [10, 20, 15, 30, 25, 35, 40, 20, 10, 30];
   @override
   void initState() {
-    Provider.of<HomeViewModel>(context, listen: false).getCreditCardList();
+    WidgetsBinding.instance.addPostFrameCallback((_) =>
+        Provider.of<HomeViewModel>(context, listen: false).getAllDetails());
     super.initState();
   }
 
@@ -59,7 +59,8 @@ class _HomeViewState extends State<HomeView> {
             creditCardList: homeVm.creditCardList,
             categoryList: homeVm.categoryList,
             transactionList: homeVm.transactionList,
-            chartDataPoints: dataPoints,
+            chartDataPoints: homeVm.balanceGraphDataPoints,
+            homeViewModel: homeVm,
           );
         },
       ),
@@ -73,7 +74,7 @@ class _HomeBody extends StatelessWidget {
   final List<CategoryWithDetails> categoryList;
   final List<Transaction> transactionList;
   final List<double> chartDataPoints;
-
+  final HomeViewModel homeViewModel;
   const _HomeBody({
     super.key,
     required this.totalBalance,
@@ -81,6 +82,7 @@ class _HomeBody extends StatelessWidget {
     required this.categoryList,
     required this.transactionList,
     required this.chartDataPoints,
+    required this.homeViewModel,
   });
 
   @override
@@ -92,7 +94,8 @@ class _HomeBody extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           _BalanceWidget(totalBalanceFormatted: totalBalanceFormatted),
-          _ChartWidget(chartDataPoints: chartDataPoints),
+          _ChartWidget(
+              chartDataPoints: chartDataPoints, homeViewModel: homeViewModel),
           Padding(
             padding: const EdgeInsets.all(AppSpacing.small),
             child: CreditCardHomeWidget(creditCardList: creditCardList),
@@ -145,13 +148,13 @@ class _BalanceWidget extends StatelessWidget {
 }
 
 class _ChartWidget extends StatelessWidget {
-  const _ChartWidget({
-    super.key,
-    required this.chartDataPoints,
-  });
-
   final List<double> chartDataPoints;
+  final HomeViewModel homeViewModel;
 
+  const _ChartWidget({
+    required this.chartDataPoints,
+    required this.homeViewModel,
+  });
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -168,7 +171,9 @@ class _ChartWidget extends StatelessWidget {
               padding: const EdgeInsets.all(AppSpacing.small),
               child: PeriodSelectorBarWidget(
                 defaultPeriodId: PeriodId.SIX_MONTH,
-                onPeriodChanged: (period) {},
+                onPeriodChanged: (period) {
+                  homeViewModel.onPeriodChanged(period);
+                },
               ),
             ),
           )

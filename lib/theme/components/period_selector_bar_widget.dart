@@ -163,3 +163,29 @@ enum PeriodId {
   ONE_YEAR,
   ALL
 }
+
+extension PeriodExt on Period {
+  DateTime startTime() {
+    final now = DateTime.now();
+    switch (id) {
+      case PeriodId.ONE_WEEK:
+        return DateTime(now.year, now.month, now.day - 7);
+      case PeriodId.ONE_MONTH:
+        return DateTime(now.year, now.month - 1, now.day);
+      case PeriodId.THREE_MONTH:
+        return DateTime(now.year, now.month - 3, now.day);
+      case PeriodId.SIX_MONTH:
+        return DateTime(now.year, now.month - 6, now.day);
+      case PeriodId.YTD:
+        return DateTime(now.year, 1, 1);
+      case PeriodId.ONE_YEAR:
+        return DateTime(now.year - 1, now.month, now.day);
+      case PeriodId.ALL:
+        return now;
+    }
+  }
+
+  DateTime endTime() {
+    return DateTime.now();
+  }
+}

@@ -15,6 +15,18 @@ class AppCreditCardRepository implements CreditCardRepository {
   }
 
   @override
+  double getTotalBalanceForPeriod(
+      {required DateTime start, required DateTime end}) {
+    return _creditCardDataSource.calculateTotalBalanceForPeriod(
+        start: start, end: end);
+  }
+
+  @override
+  List<double> getBalances() {
+    return _creditCardDataSource.generateBalances();
+  }
+
+  @override
   List<CreditCard> getAllCreditCards() {
     return _creditCardDataSource.getCreditCardList();
   }
@@ -24,7 +36,22 @@ class AppCreditCardRepository implements CreditCardRepository {
     final creditCardToBalanceMap =
         _creditCardDataSource.calculateCreditCardBalances();
     return _creditCardDataSource.getCreditCardList().map((card) {
-      final balance = creditCardToBalanceMap[card.id]!;
+      final balance = creditCardToBalanceMap[card.id] ??
+          0.00; //if no credit cards found in transactions, then there is no due
+      return CreditCardWithBalance(creditCard: card, balance: balance);
+    }).toList(growable: false);
+  }
+
+  @override
+  List<CreditCardWithBalance> getAllCreditCardsWithBalanceForPeriod({
+    required DateTime start,
+    required DateTime end,
+  }) {
+    final creditCardToBalanceMap = _creditCardDataSource
+        .calculateCreditCardBalancesFor(start: start, end: end);
+    return _creditCardDataSource.getCreditCardList().map((card) {
+      final balance = creditCardToBalanceMap[card.id] ??
+          0.00; //if no credit cards found in transactions, then there is no due
       return CreditCardWithBalance(creditCard: card, balance: balance);
     }).toList(growable: false);
   }
