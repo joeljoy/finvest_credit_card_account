@@ -1,8 +1,14 @@
 import 'dart:math';
-
 import 'package:finvest_credit_card_account/common/transactions/domain/entities/transaction.dart';
 
 class FinvestDataHelper {
+  List<Transaction> get transactions => _transactions;
+  List<Transaction> _transactions = [];
+
+  FinvestDataHelper() {
+    _transactions = _generateTransactions(1000);
+  }
+
   List<String> merchantNames = [
     'Uber',
     'McDonalds',
@@ -37,7 +43,7 @@ class FinvestDataHelper {
   ///
   /// The generated transactions include a good mix of `TransactionStatus` and
   /// `TransactionType`.
-  List<Transaction> generateTransactions(int count) {
+  List<Transaction> _generateTransactions(int count) {
     final random = Random();
     final now = DateTime.now();
     final transactions = List<Transaction>.generate(count, (index) {
