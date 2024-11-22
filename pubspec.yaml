@@ -29,6 +29,16 @@ flutter:
 
   assets:
     - assets/wells_fargo_logo.png
+    - assets/wells_fargo_logo.png
+    - assets/citi_logo.png
+    - assets/ikea_logo.png
+    - assets/category_food_logo.png
+    - assets/category_apps_software_logo.png
+    - assets/category_health_logo.png
+    - assets/jbl_logo.png
+    - assets/mcd_logo.png
+    - assets/uber_logo.png
+    - assets/starbucks_logo.png
 
   fonts:
     - family: Maison Neue
