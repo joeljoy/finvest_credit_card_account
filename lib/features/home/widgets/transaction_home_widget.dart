@@ -1,8 +1,8 @@
 import 'package:finvest_credit_card_account/common/transactions/domain/entities/transaction.dart';
+import 'package:finvest_credit_card_account/common/transactions/transaction_ui_util.dart';
 import 'package:finvest_credit_card_account/features/home/widgets/home_component_template_widget.dart';
 import 'package:finvest_credit_card_account/theme/app_colors.dart';
 import 'package:finvest_credit_card_account/theme/components/app_text_button.dart';
-import 'package:finvest_credit_card_account/utils/data_and_time_util.dart';
 import 'package:finvest_credit_card_account/utils/image_logo_util.dart';
 import 'package:flutter/material.dart';
 
@@ -18,14 +18,9 @@ class TransactionHomeWidget extends HomeComponentTemplateWidget {
   @override
   List<HomeComponentWidgetItem> getItems() {
     return transactions.map((transaction) {
-      final formattedDate = DataAndTimeUtil.formatDate(transaction.date);
-      final description = StringBuffer(formattedDate);
-      if (transaction.status == TransactionStatus.PENDING) {
-        description.write(' • Pending');
-      }
       return HomeComponentWidgetItem(
         title: transaction.merchantName,
-        description: description.toString(),
+        description: transaction.description,
         amount: transaction.value,
         imageSource: ImageLogoUtil.getLogoForName(transaction.merchantName),
       );

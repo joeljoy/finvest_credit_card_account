@@ -1,7 +1,9 @@
 import 'package:collection/collection.dart';
 import 'package:finvest_credit_card_account/common/finvest_data_helper.dart';
+import 'package:finvest_credit_card_account/common/transactions/data/transaction_data_source.dart';
 import 'package:finvest_credit_card_account/common/transactions/domain/entities/transaction.dart';
 import 'package:finvest_credit_card_account/common/transactions/domain/transaction_repository.dart';
+import 'package:get_it/get_it.dart';
 
 class AppTransactionRepository implements TransactionRepository {
   final FinvestDataHelper _finvestDataHelper;
@@ -17,5 +19,10 @@ class AppTransactionRepository implements TransactionRepository {
         })
         .take(limit)
         .toList(growable: false);
+  }
+
+  @override
+  TransactionDataSource createDataSource() {
+    return TransactionDataSource(finvestDataHelper: GetIt.instance.get());
   }
 }

@@ -42,6 +42,7 @@ class _HomeViewState extends State<HomeView> {
         titleSpacing: 0.0,
         titleTextStyle: context.typography.subHeading1
             .copyWith(fontSize: 18, color: AppColors.teal),
+        centerTitle: false,
         actions: const [
           Padding(
             padding: EdgeInsets.only(right: 8.0),

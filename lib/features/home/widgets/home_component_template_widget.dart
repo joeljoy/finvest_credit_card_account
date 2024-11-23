@@ -20,6 +20,10 @@ abstract class HomeComponentTemplateWidget extends StatelessWidget {
         color: AppColors.grey,
         borderRadius: BorderRadius.circular(16),
         boxShadow: AppShadows.container,
+        border: Border.all(
+          color: AppColors.white,
+          width: 1.0,
+        ),
       ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
