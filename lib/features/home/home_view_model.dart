@@ -60,9 +60,9 @@ class HomeViewModel extends ViewModel {
   }
 
   void onPeriodChanged(Period period) {
-    if (_selectedPeriod != period) {
+    if (_selectedPeriod.id != period.id) {
       _selectedPeriod = period;
+      getAllDetails();
     }
-    getAllDetails();
   }
 }

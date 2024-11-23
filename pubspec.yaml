@@ -17,6 +17,7 @@ dependencies:
   provider: ^6.1.2
   get_it: ^8.0.2
   intl: ^0.20.0
+  flutter_svg: ^2.0.15
 
 dev_dependencies:
   flutter_test:
@@ -39,6 +40,10 @@ flutter:
     - assets/mcd_logo.png
     - assets/uber_logo.png
     - assets/starbucks_logo.png
+    - assets/ic_discovery.svg
+    - assets/ic_home.svg
+    - assets/ic_invest.svg
+    - assets/image_accounts.png
 
   fonts:
     - family: Maison Neue

@@ -8,6 +8,7 @@ import 'package:finvest_credit_card_account/features/home/widgets/transaction_ho
 import 'package:finvest_credit_card_account/theme/app_colors.dart';
 import 'package:finvest_credit_card_account/theme/app_spacing.dart';
 import 'package:finvest_credit_card_account/theme/components/amount_text_view.dart';
+import 'package:finvest_credit_card_account/theme/components/app_bottom_bar.dart';
 import 'package:finvest_credit_card_account/theme/components/chart_painter.dart';
 import 'package:finvest_credit_card_account/theme/components/period_selector_bar_widget.dart';
 import 'package:finvest_credit_card_account/theme/theme_ext.dart';
@@ -64,6 +65,7 @@ class _HomeViewState extends State<HomeView> {
           );
         },
       ),
+      bottomNavigationBar: const AppBottomBar(),
     );
   }
 }
