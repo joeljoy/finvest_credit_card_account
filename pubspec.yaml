@@ -44,6 +44,7 @@ flutter:
     - assets/ic_home.svg
     - assets/ic_invest.svg
     - assets/image_accounts.png
+    - assets/ic_filter.svg
 
   fonts:
     - family: Maison Neue

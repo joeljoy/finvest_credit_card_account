@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:finvest_credit_card_account/frameworks/pagination/core/paging_source.dart';
 import 'package:finvest_credit_card_account/frameworks/pagination/model/load_params.dart';
 import 'package:finvest_credit_card_account/frameworks/pagination/model/load_result.dart';
+import 'package:flutter/material.dart' as material;
 
 class PagingController<K, T> {
   final PagingSource<K, T> pagingSource;
@@ -13,7 +14,9 @@ class PagingController<K, T> {
 
   PagingController({required this.pagingSource, required this.pageSize})
       : _streamController = StreamController.broadcast() {
-    refresh();
+    Future.delayed(material.Durations.short4, () {
+      refresh();
+    });
   }
 
   void append() {

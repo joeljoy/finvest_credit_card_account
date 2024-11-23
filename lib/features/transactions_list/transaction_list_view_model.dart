@@ -1,14 +1,18 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 // ignore_for_file: constant_identifier_names
 
+import 'package:finvest_credit_card_account/common/credit_card/domain/credit_card_repository.dart';
 import 'package:finvest_credit_card_account/common/transactions/domain/entities/transaction.dart';
 import 'package:finvest_credit_card_account/common/transactions/domain/transaction_repository.dart';
 import 'package:finvest_credit_card_account/common/view_model.dart';
+import 'package:finvest_credit_card_account/features/transactions_list/transaction_chip.dart';
 import 'package:finvest_credit_card_account/frameworks/pagination/core/paging_controller.dart';
 import 'package:finvest_credit_card_account/frameworks/pagination/model/load_result.dart';
 
 class TransactionListViewModel extends ViewModel {
   static const PAGE_SIZE = 15;
   final TransactionRepository _transactionRepository;
+  final CreditCardRepository _creditCardRepository;
 
   PagingController<int, Transaction>? _pagingController;
   bool _isLoadMore = false;
@@ -17,11 +21,42 @@ class TransactionListViewModel extends ViewModel {
   List<Transaction> get transactions => _transactions;
   List<Transaction> _transactions = List.empty();
 
-  TransactionListViewModel(
-      {required TransactionRepository transactionRepository})
-      : _transactionRepository = transactionRepository;
+  List<TransactionChip> get chips => [
+        TransactionChip(
+            id: "Sort", label: "Sort by", isActive: false, type: ChipType.Sort),
+        TransactionChip(
+            id: "Filters",
+            label: "Filters",
+            isActive: false,
+            type: ChipType.Filter),
+        TransactionChip(
+            id: "Top transaction",
+            label: "Top transaction",
+            isActive: false,
+            type: ChipType.FilterItem),
+      ];
 
-  void initialiseDataSource() {
+  List<CardSelector> get cardList => _cardList;
+  List<CardSelector> _cardList = [
+    CardSelector(id: "ALL", label: "All credit cards")
+  ];
+
+  TransactionListViewModel({
+    required TransactionRepository transactionRepository,
+    required CreditCardRepository creditCardRepository,
+  })  : _transactionRepository = transactionRepository,
+        _creditCardRepository = creditCardRepository;
+
+  void init() {
+    final allCards = _creditCardRepository.getAllCreditCards();
+    _cardList += allCards.map((card) {
+      return CardSelector(id: card.id, label: card.name);
+    }).toList(growable: false);
+
+    _initialiseDataSource();
+  }
+
+  void _initialiseDataSource() {
     final pagingSource = _transactionRepository.createDataSource();
     _pagingController =
         PagingController(pagingSource: pagingSource, pageSize: PAGE_SIZE);
@@ -41,4 +76,18 @@ class TransactionListViewModel extends ViewModel {
       _pagingController!.append();
     }
   }
+
+  int? getCounterForChipIfAny(TransactionChip chip) {
+    return null;
+  }
+}
+
+class CardSelector {
+  String id;
+  String label;
+
+  CardSelector({
+    required this.id,
+    required this.label,
+  });
 }
