@@ -15,6 +15,7 @@ import 'package:finvest_credit_card_account/utils/currency_utils.dart';
 import 'package:finvest_credit_card_account/utils/image_logo_util.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get_it/get_it.dart';
 import 'package:provider/provider.dart';
@@ -54,6 +55,12 @@ class _TransactionListViewState extends State<TransactionListView> {
         surfaceTintColor: AppColors.transparent,
         iconTheme: const IconThemeData(size: 20),
         actionsIconTheme: const IconThemeData(size: 24),
+        systemOverlayStyle: const SystemUiOverlayStyle(
+          statusBarColor: AppColors.lightBlue,
+          statusBarIconBrightness: Brightness.dark,
+          systemNavigationBarColor: AppColors.lightBlue,
+          systemNavigationBarIconBrightness: Brightness.dark,
+        ),
       ),
       body: Consumer<TransactionListViewModel>(
         builder: (context, vm, child) {

@@ -16,7 +16,7 @@ class HomeViewModel extends ViewModel {
   double _totalBalance = 0.0;
 
   List<double> get balanceGraphDataPoints => _balanceGraphDataPoints;
-  List<double> _balanceGraphDataPoints = [];
+  List<double> _balanceGraphDataPoints = [100,78,90,78,29]; // dummy
 
   List<CreditCardWithBalance> get creditCardList => _creditCardList;
   List<CreditCardWithBalance> _creditCardList = List.empty();

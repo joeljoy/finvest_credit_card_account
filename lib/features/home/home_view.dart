@@ -40,25 +40,30 @@ class _HomeViewState extends State<HomeView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: InkWell(
-            onTap: () => SystemNavigator.pop(), //Exit the app
-            child: const Icon(CupertinoIcons.chevron_back)),
-        title: const Text("Credit Card"),
-        titleSpacing: 0.0,
-        titleTextStyle: context.typography.subHeading1
-            .copyWith(fontSize: 18, color: AppColors.teal),
-        centerTitle: false,
-        actions: const [
-          Padding(
-            padding: EdgeInsets.only(right: 8.0),
-            child: Icon(CupertinoIcons.info_circle),
-          )
-        ],
-        backgroundColor: AppColors.transparent,
-        surfaceTintColor: AppColors.transparent,
-        iconTheme: const IconThemeData(size: 20),
-        actionsIconTheme: const IconThemeData(size: 24),
-      ),
+          leading: InkWell(
+              onTap: () => SystemNavigator.pop(), //Exit the app
+              child: const Icon(CupertinoIcons.chevron_back)),
+          title: const Text("Credit Card"),
+          titleSpacing: 0.0,
+          titleTextStyle: context.typography.subHeading1
+              .copyWith(fontSize: 18, color: AppColors.teal),
+          centerTitle: false,
+          actions: const [
+            Padding(
+              padding: EdgeInsets.only(right: 8.0),
+              child: Icon(CupertinoIcons.info_circle),
+            )
+          ],
+          backgroundColor: AppColors.transparent,
+          surfaceTintColor: AppColors.transparent,
+          iconTheme: const IconThemeData(size: 20),
+          actionsIconTheme: const IconThemeData(size: 24),
+          systemOverlayStyle: const SystemUiOverlayStyle(
+            statusBarColor: AppColors.lightBlue,
+            statusBarIconBrightness: Brightness.dark,
+            systemNavigationBarColor: AppColors.lightBlue,
+            systemNavigationBarIconBrightness: Brightness.dark,
+          )),
       body: Consumer<HomeViewModel>(
         builder: (context, homeVm, child) {
           return _HomeBody(

@@ -37,6 +37,7 @@ class _AppState extends State<App> {
           child: const HomeView(),
         ),
       ),
+      debugShowCheckedModeBanner: false,
     );
   }
 }
