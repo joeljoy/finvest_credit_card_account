@@ -16,6 +16,8 @@ class TransactionListViewModel extends ViewModel {
 
   PagingController<int, Transaction>? _pagingController;
   bool _isLoadMore = false;
+
+  bool get isLoading => _isLoading;
   bool _isLoading = false;
 
   List<Transaction> get transactions => _transactions;
@@ -75,7 +77,13 @@ class TransactionListViewModel extends ViewModel {
   void loadMore() {
     if (_isLoading == false && _isLoadMore) {
       _isLoading = true;
-      _pagingController!.append();
+      notifyListeners();
+
+
+      //artificila delay
+      Future.delayed(const Duration(seconds: 2), () {
+        _pagingController!.append();
+      });
     }
   }
 

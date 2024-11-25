@@ -292,8 +292,8 @@ class _Transactions extends StatelessWidget {
         ),
         child: NotificationListener<ScrollNotification>(
           onNotification: (ScrollNotification scrollInfo) {
-            if (scrollInfo.metrics.pixels ==
-                scrollInfo.metrics.maxScrollExtent) {
+            if (scrollInfo.metrics.pixels >=
+                scrollInfo.metrics.maxScrollExtent - 100) {
               viewModel.loadMore();
             }
             return true;
@@ -301,6 +301,20 @@ class _Transactions extends StatelessWidget {
           child: ListView.separated(
             shrinkWrap: true,
             itemBuilder: (context, index) {
+              if (index == transactions.length && viewModel.isLoading) {
+                return const Padding(
+                  padding: EdgeInsets.only(bottom: AppSpacing.small),
+                  child: SizedBox.square(
+                    dimension: 32,
+                    child: Center(
+                      child: CircularProgressIndicator(
+                        strokeWidth: 2,
+                        color: AppColors.teal,
+                      ),
+                    ),
+                  ),
+                );
+              }
               final transaction = transactions[index];
               final amount =
                   CurrencyUtils.getFormattedAmount(amount: transaction.value);
@@ -321,7 +335,7 @@ class _Transactions extends StatelessWidget {
                 SizedBox(height: AppSpacing.small),
               ],
             ),
-            itemCount: transactions.length,
+            itemCount: transactions.length + (viewModel.isLoading ? 1 : 0),
           ),
         ),
       ),
