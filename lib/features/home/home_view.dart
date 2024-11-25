@@ -36,8 +36,21 @@ class _HomeViewState extends State<HomeView> {
     super.initState();
   }
 
+  void _setSystemUIOverlayStyle() {
+    const backgroundColor = AppColors.lightBlue;
+    SystemChrome.setSystemUIOverlayStyle(
+      const SystemUiOverlayStyle(
+        statusBarColor: backgroundColor,
+        statusBarIconBrightness: Brightness.dark,
+        systemNavigationBarColor: backgroundColor,
+        systemNavigationBarIconBrightness: Brightness.dark,
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
+    _setSystemUIOverlayStyle();
     return Scaffold(
       appBar: AppBar(
           leading: InkWell(

@@ -237,13 +237,17 @@ class _SortAndFilterChips extends StatelessWidget {
       case ChipType.Filter:
         final List<String>? filters = await showModalBottomSheet<List<String>>(
           context: context,
+          isScrollControlled: true,
           builder: (context) {
-            return ChangeNotifierProvider<TransactionFilterViewModel>(
-              create: (context) => TransactionFilterViewModel(
-                transactionRepository: GetIt.instance.get(),
-                categoryRepository: GetIt.instance.get(),
+            return FractionallySizedBox(
+              heightFactor: 0.8,
+              child: ChangeNotifierProvider<TransactionFilterViewModel>(
+                create: (context) => TransactionFilterViewModel(
+                  transactionRepository: GetIt.instance.get(),
+                  categoryRepository: GetIt.instance.get(),
+                ),
+                child: const TransactionFilterView(),
               ),
-              child: const TransactionFilterView(),
             );
           },
           backgroundColor: AppColors.grey,
