@@ -129,20 +129,6 @@ class _CreditCardDropDownState extends State<_CreditCardDropDown> {
         right: AppSpacing.xsmall,
       ),
       child: DropdownButtonFormField<CardSelector>(
-        value: _selectedCard,
-        decoration: InputDecoration(
-          filled: true,
-          fillColor: AppColors.grey,
-          border: border,
-          enabledBorder: border,
-          focusedBorder: border,
-        ),
-        icon: const Icon(
-          CupertinoIcons.chevron_down,
-          color: AppColors.teal,
-          size: 16,
-        ),
-        dropdownColor: AppColors.grey,
         items: widget.vm.cardList.map((card) {
           return DropdownMenuItem<CardSelector>(
               value: card,
@@ -152,11 +138,26 @@ class _CreditCardDropDownState extends State<_CreditCardDropDown> {
                     color: AppColors.teal, fontSize: 14, height: 20 / 14),
               ));
         }).toList(growable: false),
+        value: _selectedCard,
         onChanged: (card) {
           setState(() {
             _selectedCard = card;
           });
         },
+        icon: const Icon(
+          CupertinoIcons.chevron_down,
+          color: AppColors.teal,
+          size: 16,
+        ),
+        dropdownColor: AppColors.grey,
+        decoration: InputDecoration(
+            filled: true,
+            fillColor: AppColors.grey,
+            border: border,
+            enabledBorder: border,
+            focusedBorder: border,
+            contentPadding:
+                const EdgeInsets.symmetric(horizontal: AppSpacing.small)),
       ),
     );
   }
