@@ -21,9 +21,39 @@ class Transaction {
 }
 
 enum TransactionStatus {
-  ALL,
   COMPLETED,
   PENDING,
 }
 
-enum TransactionType { ALL, BUY, SELL, DEPOSIT, WITHDRAWL }
+extension TransactionStatusExt on TransactionStatus {
+  String get label {
+    switch (this) {
+      case TransactionStatus.COMPLETED:
+        return "Completed";
+      case TransactionStatus.PENDING:
+        return "Pending";
+    }
+  }
+}
+
+enum TransactionType {
+  BUY,
+  SELL,
+  DEPOSIT,
+  WITHDRAWL,
+}
+
+extension TransactionTypeExt on TransactionType {
+  String get label {
+    switch (this) {
+      case TransactionType.BUY:
+        return "Buy";
+      case TransactionType.SELL:
+        return "Sell";
+      case TransactionType.DEPOSIT:
+        return "Deposit";
+      case TransactionType.WITHDRAWL:
+        return "Withdrawal";
+    }
+  }
+}

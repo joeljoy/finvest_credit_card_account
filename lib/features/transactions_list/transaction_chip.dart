@@ -5,7 +5,7 @@ class TransactionChip {
   final String label;
   final bool isActive;
   final ChipType type;
-
+  
   TransactionChip({
     required this.isActive,
     required this.type,

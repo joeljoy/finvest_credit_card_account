@@ -1,5 +1,7 @@
 import 'package:finvest_credit_card_account/common/transactions/domain/entities/transaction.dart';
 import 'package:finvest_credit_card_account/common/transactions/transaction_ui_util.dart';
+import 'package:finvest_credit_card_account/features/transactions_list/filters/transaction_filter_view.dart';
+import 'package:finvest_credit_card_account/features/transactions_list/filters/transaction_filter_view_model.dart';
 import 'package:finvest_credit_card_account/features/transactions_list/transaction_chip.dart';
 import 'package:finvest_credit_card_account/features/transactions_list/transaction_list_view_model.dart';
 import 'package:finvest_credit_card_account/theme/app_colors.dart';
@@ -14,6 +16,7 @@ import 'package:finvest_credit_card_account/utils/image_logo_util.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get_it/get_it.dart';
 import 'package:provider/provider.dart';
 
 class TransactionListView extends StatefulWidget {
@@ -26,10 +29,8 @@ class TransactionListView extends StatefulWidget {
 class _TransactionListViewState extends State<TransactionListView> {
   @override
   void initState() {
-    WidgetsBinding.instance.addPostFrameCallback(
-      (_) => Provider.of<TransactionListViewModel>(context, listen: false)
-          .init(),
-    );
+    WidgetsBinding.instance.addPostFrameCallback((_) =>
+        Provider.of<TransactionListViewModel>(context, listen: false).init());
     super.initState();
   }
 
@@ -175,6 +176,7 @@ class _SortAndFilterChips extends StatelessWidget {
               activeBorderColor: AppColors.teal,
               inactiveBorderColor: AppColors.white,
               counter: vm.getCounterForChipIfAny(chip),
+              onTap: () => _handleChipTap(context, chip),
               iconBuilder: (_) => getIconForChip(chip),
             );
           },
@@ -205,12 +207,41 @@ class _SortAndFilterChips extends StatelessWidget {
           colorFilter: const ColorFilter.mode(AppColors.teal, BlendMode.srcIn),
         );
       case ChipType.FilterItem:
-        return const Icon(
-          Icons.close,
-          size: 12,
-          color: AppColors.teal,
+        if (chip.isActive) {
+          return const Icon(
+            Icons.close,
+            size: 12,
+            color: AppColors.teal,
+          );
+        } else {
+          return const SizedBox();
+        }
+    }
+  }
+
+  void _handleChipTap(BuildContext context, TransactionChip chip) {
+    switch (chip.type) {
+      case ChipType.Filter:
+        showModalBottomSheet(
+          context: context,
+          builder: (context) {
+            return ChangeNotifierProvider<TransactionFilterViewModel>(
+              create: (context) => TransactionFilterViewModel(
+                transactionRepository: GetIt.instance.get(),
+                categoryRepository: GetIt.instance.get(),
+              ),
+              child: const TransactionFilterView(),
+            );
+          },
+          backgroundColor: AppColors.grey,
+          shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.vertical(
+              top: Radius.circular(20), // Top corners radius
+            ),
+          ),
         );
-        ;
+      default:
+      //Other FilterType cases to be handled later.
     }
   }
 }

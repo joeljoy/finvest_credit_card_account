@@ -11,6 +11,7 @@ class AppChip extends StatelessWidget {
   final Color inactiveBorderColor;
   final int? counter;
   final IconData? iconData;
+  final VoidCallback onTap;
   final Widget Function(BuildContext context)? iconBuilder;
 
   const AppChip({
@@ -23,13 +24,14 @@ class AppChip extends StatelessWidget {
     required this.inactiveBorderColor,
     this.counter,
     this.iconData,
+    required this.onTap,
     this.iconBuilder,
   });
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {},
+      onTap: onTap,
       child: Container(
         height: 32,
         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
