@@ -5,6 +5,8 @@ import 'package:finvest_credit_card_account/features/home/home_view_model.dart';
 import 'package:finvest_credit_card_account/features/home/widgets/category_home_widget.dart';
 import 'package:finvest_credit_card_account/features/home/widgets/credit_card_home_widget.dart';
 import 'package:finvest_credit_card_account/features/home/widgets/transaction_home_widget.dart';
+import 'package:finvest_credit_card_account/features/transactions_list/transaction_list_view.dart';
+import 'package:finvest_credit_card_account/features/transactions_list/transaction_list_view_model.dart';
 import 'package:finvest_credit_card_account/theme/app_colors.dart';
 import 'package:finvest_credit_card_account/theme/app_spacing.dart';
 import 'package:finvest_credit_card_account/theme/components/amount_text_view.dart';
@@ -15,6 +17,8 @@ import 'package:finvest_credit_card_account/theme/theme_ext.dart';
 import 'package:finvest_credit_card_account/utils/currency_utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:get_it/get_it.dart';
 import 'package:provider/provider.dart';
 
 class HomeView extends StatefulWidget {
@@ -36,7 +40,9 @@ class _HomeViewState extends State<HomeView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: const Icon(CupertinoIcons.chevron_back),
+        leading: InkWell(
+            onTap: () => SystemNavigator.pop(), //Exit the app
+            child: const Icon(CupertinoIcons.chevron_back)),
         title: const Text("Credit Card"),
         titleSpacing: 0.0,
         titleTextStyle: context.typography.subHeading1
@@ -62,12 +68,31 @@ class _HomeViewState extends State<HomeView> {
             transactionList: homeVm.transactionList,
             chartDataPoints: homeVm.balanceGraphDataPoints,
             homeViewModel: homeVm,
+            onFooterButtonTap: (value) {
+              if (value == "Transactions") {
+                _navigateToTransactionList();
+              }
+            },
           );
         },
       ),
       bottomNavigationBar: const AppBottomBar(),
       backgroundColor: AppColors.lightBlue,
     );
+  }
+
+  void _navigateToTransactionList() {
+    Navigator.push(context, MaterialPageRoute(
+      builder: (context) {
+        return ChangeNotifierProvider<TransactionListViewModel>(
+          create: (context) => TransactionListViewModel(
+            transactionRepository: GetIt.instance.get(),
+            creditCardRepository: GetIt.instance.get(),
+          ),
+          child: const TransactionListView(),
+        );
+      },
+    ));
   }
 }
 
@@ -78,6 +103,8 @@ class _HomeBody extends StatelessWidget {
   final List<Transaction> transactionList;
   final List<double> chartDataPoints;
   final HomeViewModel homeViewModel;
+  final ValueChanged<String> onFooterButtonTap;
+
   const _HomeBody({
     super.key,
     required this.totalBalance,
@@ -86,6 +113,7 @@ class _HomeBody extends StatelessWidget {
     required this.transactionList,
     required this.chartDataPoints,
     required this.homeViewModel,
+    required this.onFooterButtonTap,
   });
 
   @override
@@ -109,7 +137,12 @@ class _HomeBody extends StatelessWidget {
           ),
           Padding(
             padding: const EdgeInsets.all(AppSpacing.small),
-            child: TransactionHomeWidget(transactions: transactionList),
+            child: TransactionHomeWidget(
+              transactions: transactionList,
+              onFooterButtonTap: () {
+                onFooterButtonTap("Transactions");
+              },
+            ),
           )
         ],
       ),

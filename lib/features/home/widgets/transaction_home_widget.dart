@@ -8,7 +8,12 @@ import 'package:flutter/material.dart';
 
 class TransactionHomeWidget extends HomeComponentTemplateWidget {
   final List<Transaction> transactions;
-  const TransactionHomeWidget({super.key, required this.transactions});
+  final VoidCallback onFooterButtonTap;
+  const TransactionHomeWidget({
+    super.key,
+    required this.transactions,
+    required this.onFooterButtonTap,
+  });
 
   @override
   String getTitle() {
@@ -38,7 +43,7 @@ class TransactionHomeWidget extends HomeComponentTemplateWidget {
       label: "See all transactions",
       trailingIcon:
           const Icon(Icons.navigate_next, size: 16, color: AppColors.blue),
-      onTap: () {},
+      onTap: onFooterButtonTap,
     );
   }
 }

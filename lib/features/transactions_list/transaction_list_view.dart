@@ -38,7 +38,12 @@ class _TransactionListViewState extends State<TransactionListView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: const Icon(CupertinoIcons.chevron_back),
+        leading: InkWell(
+          onTap: () {
+            Navigator.pop(context);
+          },
+          child: const Icon(CupertinoIcons.chevron_back),
+        ),
         actions: const [
           Padding(
             padding: EdgeInsets.only(right: 8.0),
