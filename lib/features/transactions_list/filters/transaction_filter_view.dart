@@ -50,13 +50,19 @@ class _TransactionFilterViewState extends State<TransactionFilterView> {
               itemBuilder: (context, index) {
                 final filter = TransactionFilterTypes.values[index];
                 if (filter == TransactionFilterTypes.AMOUNT) {
-                  return const TransactionFilterSliderWidget(title: "Amount");
+                  return TransactionFilterSliderWidget(
+                    title: "Amount",
+                    minValue: vm.getMinAndMaxTransactionValue().$1,
+                    maxValue: vm.getMinAndMaxTransactionValue().$2,
+                  );
                 } else {
                   final items = vm.getItemsForFilter(filter);
                   return TransactionFilterChipWidget(
                     title: filter.label,
                     chips: items,
-                    onTap: () {},
+                    onFilterChanged: (previous, current) {
+                      vm.onFilterTap(previous: previous, current: current);
+                    },
                   );
                 }
               },
@@ -90,7 +96,7 @@ class _TransactionFilterViewState extends State<TransactionFilterView> {
                     ),
                     child: TextButton(
                       onPressed: () {
-                        // Handle "Clear all" action
+                        Navigator.pop(context, <String>[]);
                       },
                       style: TextButton.styleFrom(
                         padding: const EdgeInsets.symmetric(
@@ -113,7 +119,7 @@ class _TransactionFilterViewState extends State<TransactionFilterView> {
                     ),
                     child: TextButton(
                       onPressed: () {
-                        // Handle "Apply" action
+                        Navigator.pop(context, vm.filtersSelected);
                       },
                       style: TextButton.styleFrom(
                         padding: const EdgeInsets.symmetric(

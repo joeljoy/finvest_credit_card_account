@@ -8,12 +8,14 @@ import 'package:flutter/material.dart';
 class TransactionFilterChipWidget extends StatefulWidget {
   final String title;
   final List<TransactionChip> chips;
-  final VoidCallback onTap;
-  const TransactionFilterChipWidget(
-      {super.key,
-      required this.title,
-      required this.chips,
-      required this.onTap});
+  final Function(TransactionChip? previous, TransactionChip current)
+      onFilterChanged;
+  const TransactionFilterChipWidget({
+    super.key,
+    required this.title,
+    required this.chips,
+    required this.onFilterChanged,
+  });
 
   @override
   State<TransactionFilterChipWidget> createState() =>
@@ -22,6 +24,15 @@ class TransactionFilterChipWidget extends StatefulWidget {
 
 class _TransactionFilterChipWidgetState
     extends State<TransactionFilterChipWidget> {
+  late TransactionChip _selectedChip;
+  @override
+  void initState() {
+    _selectedChip = widget.chips.firstWhere((chip) {
+      return chip.isActive;
+    });
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -39,14 +50,20 @@ class _TransactionFilterChipWidgetState
           runSpacing: AppSpacing.xsmall,
           children: widget.chips.map((chip) {
             return AppChip(
-              label: chip.label,
-              isSelected: chip.isActive,
-              activeBackgroundColor: AppColors.lightBlue,
-              inactiveBackgroundColor: AppColors.transparent,
-              activeBorderColor: AppColors.teal,
-              inactiveBorderColor: AppColors.grey2,
-              onTap: widget.onTap,
-            );
+                label: chip.label,
+                isSelected: chip.id == _selectedChip.id,
+                activeBackgroundColor: AppColors.lightBlue,
+                inactiveBackgroundColor: AppColors.transparent,
+                activeBorderColor: AppColors.teal,
+                inactiveBorderColor: AppColors.grey2,
+                onTap: () {
+                  final previous = _selectedChip;
+                  final current = chip;
+                  setState(() {
+                    _selectedChip = chip;
+                  });
+                  widget.onFilterChanged(previous, current);
+                });
           }).toList(growable: false),
         )
       ],

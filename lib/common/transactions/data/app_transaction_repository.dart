@@ -25,4 +25,14 @@ class AppTransactionRepository implements TransactionRepository {
   TransactionDataSource createDataSource() {
     return TransactionDataSource(finvestDataHelper: GetIt.instance.get());
   }
+
+  @override
+  (double, double) getMinAndMaxTransactionValue() {
+    final transactions = _finvestDataHelper.transactions;
+    final minTransaction =
+        transactions.reduce((a, b) => a.value < b.value ? a : b);
+    final maxTransaction =
+        transactions.reduce((a, b) => a.value > b.value ? a : b);
+    return (minTransaction.value, maxTransaction.value);
+  }
 }

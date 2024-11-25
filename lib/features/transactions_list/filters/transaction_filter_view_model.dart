@@ -10,6 +10,8 @@ class TransactionFilterViewModel extends ViewModel {
   final TransactionRepository _transactionRepository;
   final CategoryRepository _categoryRepository;
 
+  List<String> filtersSelected = [];
+
   TransactionFilterViewModel({
     required TransactionRepository transactionRepository,
     required CategoryRepository categoryRepository,
@@ -104,6 +106,29 @@ class TransactionFilterViewModel extends ViewModel {
                   label: category.name);
             }).toList(growable: false);
     }
+  }
+
+  (double, double) getMinAndMaxTransactionValue() {
+    return _transactionRepository.getMinAndMaxTransactionValue();
+  }
+
+  void onFilterTap(
+      {required TransactionChip? previous, required TransactionChip current}) {
+    if (previous != null) {
+      _removeFilter(previous);
+    }
+    _addFilter(current);
+  }
+
+  void _removeFilter(TransactionChip chip) {
+    final index = filtersSelected.indexOf(chip.label);
+    if (index > -1 && index < filtersSelected.length) {
+      filtersSelected.removeAt(index);
+    }
+  }
+
+  void _addFilter(TransactionChip chip) {
+    filtersSelected.add(chip.label);
   }
 }
 

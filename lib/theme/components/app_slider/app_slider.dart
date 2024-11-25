@@ -5,7 +5,14 @@ import 'package:flutter/material.dart';
 class AppSlider extends StatefulWidget {
   final double min;
   final double max;
-  const AppSlider({super.key, required this.min, required this.max});
+  final Function(double min, double max) onRangeChanged;
+
+  const AppSlider({
+    super.key,
+    required this.min,
+    required this.max,
+    required this.onRangeChanged,
+  });
 
   @override
   State<AppSlider> createState() => _AppSliderState();
@@ -40,6 +47,7 @@ class _AppSliderState extends State<AppSlider> {
               _start = values.start;
               _end = values.end;
             });
+            widget.onRangeChanged(values.start, values.end);
           }),
     );
   }

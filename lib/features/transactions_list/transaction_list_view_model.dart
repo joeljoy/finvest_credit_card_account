@@ -21,20 +21,22 @@ class TransactionListViewModel extends ViewModel {
   List<Transaction> get transactions => _transactions;
   List<Transaction> _transactions = List.empty();
 
-  List<TransactionChip> get chips => [
-        TransactionChip(
-            id: "Sort", label: "Sort by", isActive: false, type: ChipType.Sort),
-        TransactionChip(
-            id: "Filters",
-            label: "Filters",
-            isActive: false,
-            type: ChipType.Filter),
-        TransactionChip(
-            id: "Top transaction",
-            label: "Top transaction",
-            isActive: false,
-            type: ChipType.FilterItem),
-      ];
+  List<TransactionChip> get chips => _defaultChips + _applidedFilterChips;
+  List<TransactionChip> _defaultChips = [
+    TransactionChip(
+        id: "Sort", label: "Sort by", isActive: false, type: ChipType.Sort),
+    TransactionChip(
+        id: "Filters",
+        label: "Filters",
+        isActive: false,
+        type: ChipType.Filter),
+    TransactionChip(
+        id: "Top transaction",
+        label: "Top transaction",
+        isActive: false,
+        type: ChipType.FilterItem),
+  ];
+  List<TransactionChip> _applidedFilterChips = [];
 
   List<CardSelector> get cardList => _cardList;
   List<CardSelector> _cardList = [
@@ -78,7 +80,51 @@ class TransactionListViewModel extends ViewModel {
   }
 
   int? getCounterForChipIfAny(TransactionChip chip) {
-    return null;
+    if (chip.type == ChipType.Filter) {
+      return _applidedFilterChips.isNotEmpty
+          ? _applidedFilterChips.length
+          : null;
+    } else {
+      return null;
+    }
+  }
+
+  void setFilters(List<String> filters) {
+    if (filters.isEmpty) {
+      _defaultChips = _defaultChips.map((chip) {
+        if (chip.type == ChipType.Filter) {
+          return TransactionChip(
+            id: "Filters",
+            label: "Filters",
+            isActive: false,
+            type: ChipType.Filter,
+          );
+        } else {
+          return chip;
+        }
+      }).toList(growable: false);
+      _applidedFilterChips = List.empty();
+    } else {
+      _defaultChips = _defaultChips.map((chip) {
+        if (chip.type == ChipType.Filter) {
+          return TransactionChip(
+              id: "Filters",
+              label: "Filters",
+              isActive: true,
+              type: ChipType.Filter);
+        } else {
+          return chip;
+        }
+      }).toList(growable: false);
+      _applidedFilterChips = filters.map((filter) {
+        return TransactionChip(
+            isActive: true,
+            type: ChipType.FilterItem,
+            id: filter,
+            label: filter);
+      }).toList(growable: false);
+    }
+    notifyListeners();
   }
 }
 

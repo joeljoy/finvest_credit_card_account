@@ -224,10 +224,10 @@ class _SortAndFilterChips extends StatelessWidget {
     }
   }
 
-  void _handleChipTap(BuildContext context, TransactionChip chip) {
+  void _handleChipTap(BuildContext context, TransactionChip chip) async {
     switch (chip.type) {
       case ChipType.Filter:
-        showModalBottomSheet(
+        final List<String>? filters = await showModalBottomSheet<List<String>>(
           context: context,
           builder: (context) {
             return ChangeNotifierProvider<TransactionFilterViewModel>(
@@ -245,6 +245,9 @@ class _SortAndFilterChips extends StatelessWidget {
             ),
           ),
         );
+        if (filters != null) {
+          vm.setFilters(filters);
+        }
       default:
       //Other FilterType cases to be handled later.
     }

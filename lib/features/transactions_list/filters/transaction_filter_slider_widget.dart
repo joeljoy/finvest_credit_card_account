@@ -6,7 +6,13 @@ import 'package:flutter/material.dart';
 
 class TransactionFilterSliderWidget extends StatefulWidget {
   final String title;
-  const TransactionFilterSliderWidget({super.key, required this.title});
+  final double maxValue;
+  final double minValue;
+  const TransactionFilterSliderWidget(
+      {super.key,
+      required this.title,
+      required this.maxValue,
+      required this.minValue});
 
   @override
   State<TransactionFilterSliderWidget> createState() =>
@@ -15,6 +21,16 @@ class TransactionFilterSliderWidget extends StatefulWidget {
 
 class _TransactionFilterSliderWidgetState
     extends State<TransactionFilterSliderWidget> {
+  double min = 0;
+  double max = 10000;
+
+  @override
+  void initState() {
+    min = widget.minValue;
+    max = widget.maxValue;
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -27,18 +43,22 @@ class _TransactionFilterSliderWidgetState
           style: context.typography.subHeading1.copyWith(color: AppColors.teal),
         ),
         const SizedBox(height: AppSpacing.small),
-        const AppSlider(min: 0.0, max: 10000),
+        AppSlider(
+          min: 0.0,
+          max: 10000,
+          onRangeChanged: (minVaue, maxValue) {
+            setState(() {
+              min = minVaue;
+              max = maxValue;
+            });
+          },
+        ),
         const SizedBox(height: AppSpacing.small),
-        const Row(
+        Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisSize: MainAxisSize.max,
-          children: [
-            _Amount(
-              value: "\$0",
-            ),
-            _Amount(value: "\$10000")
-          ],
+          children: [_Amount(value: min), _Amount(value: max)],
         )
       ],
     );
@@ -46,21 +66,22 @@ class _TransactionFilterSliderWidgetState
 }
 
 class _Amount extends StatelessWidget {
-  final String value;
-  const _Amount({super.key, required this.value});
+  final double value;
+  const _Amount({required this.value});
 
   @override
   Widget build(BuildContext context) {
     return Container(
+      padding: const EdgeInsets.all(AppSpacing.xsmall),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
         border: Border.all(
-          color: AppColors.grey,
+          color: AppColors.grey2,
           width: 1,
         ),
       ),
       child: Center(
-        child: Text(value, style: context.typography.label),
+        child: Text('\$${value.truncate()}', style: context.typography.label),
       ),
     );
   }
